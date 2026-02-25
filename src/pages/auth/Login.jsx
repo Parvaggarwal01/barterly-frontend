@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import authService from "../services/authService";
+import authService from "../../services/authService";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -49,14 +49,24 @@ const Login = () => {
       });
 
       console.log("Login successful:", response);
+      console.log("User data:", response.data.user);
+      console.log("User role:", response.data.user.role);
+      console.log("Is admin?", response.data.user.role === "admin");
 
       // Check if email is verified
       if (!response.data.user.isVerified) {
         // Navigate to verification page if email not verified
         navigate("/verify-email", { state: { email: formData.email } });
       } else {
-        // Navigate to dashboard/home after successful login
-        navigate("/");
+        // Navigate to appropriate dashboard based on role
+        console.log("Checking role for navigation...");
+        if (response.data.user.role === "admin") {
+          console.log("Navigating to admin dashboard");
+          navigate("/admin/dashboard");
+        } else {
+          console.log("Navigating to user dashboard");
+          navigate("/dashboard");
+        }
       }
     } catch (err) {
       console.error("Login error:", err);

@@ -8,6 +8,10 @@
   --color-background-light: #fffbf0;
   --color-background-dark: #181710;
   --color-border-dark: #181710;
+  --color-primary-dark: #f5ca00;
+  --color-neutral-surface: #f5f5f5;
+  --color-neutral-border: #e5e5e5;
+  --color-neutral: #737373;
 
   /* Font Family */
   --font-family-display: "Plus Jakarta Sans", ui-sans-serif, system-ui;
