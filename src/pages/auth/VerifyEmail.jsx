@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import authService from "../services/authService";
+import authService from "../../services/authService";
 
 const VerifyEmail = () => {
   const navigate = useNavigate();
