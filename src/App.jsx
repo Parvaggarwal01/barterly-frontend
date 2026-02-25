@@ -6,6 +6,8 @@ import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import VerifyEmail from "./pages/auth/VerifyEmail";
 import UserDashboard from "./pages/user/Dashboard";
+import MySkills from "./pages/user/MySkills";
+import PostSkill from "./pages/user/PostSkill";
 import AdminDashboard from "./pages/admin/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
@@ -20,6 +22,8 @@ function App() {
     "/login",
     "/verify-email",
     "/dashboard",
+    "/my-skills",
+    "/post-skill",
     "/admin",
   ];
   const isAuthRoute = authRoutes.some((route) =>
@@ -54,6 +58,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <UserDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-skills"
+            element={
+              <ProtectedRoute>
+                <MySkills />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/post-skill"
+            element={
+              <ProtectedRoute>
+                <PostSkill />
               </ProtectedRoute>
             }
           />
