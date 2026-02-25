@@ -1,34 +1,40 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap");
 
 @theme {
-  /* Colors */
-  --color-primary: #ffde5c;
-  --color-secondary: #a3e635;
-  --color-tertiary: #f472b6;
+  /* Colors - Updated to match neo-brutalist design */
+  --color-primary: #ffdd57;
+  --color-primary-dark: #e6c300;
+  --color-accent-teal: #4ecdc4;
+  --color-accent-pink: #ff8b94;
+  --color-accent-red: #ff6b6b;
+  --color-neutral-surface: #fffbf0;
   --color-background-light: #fffbf0;
   --color-background-dark: #181710;
-  --color-border-dark: #181710;
-  --color-primary-dark: #f5ca00;
-  --color-neutral-surface: #f5f5f5;
-  --color-neutral-border: #e5e5e5;
+  --color-border-dark: #000000;
+  --color-neutral-border: #000000;
   --color-neutral: #737373;
 
-  /* Font Family */
-  --font-family-display: "Plus Jakarta Sans", ui-sans-serif, system-ui;
-  --font-family-body: "Plus Jakarta Sans", ui-sans-serif, system-ui;
+  /* Font Family - Space Grotesk */
+  --font-family-display: "Space Grotesk", ui-sans-serif, system-ui;
+  --font-family-body: "Space Grotesk", ui-sans-serif, system-ui;
 
-  /* Border Radius - override defaults */
+  /* Border Radius - Neo-brutalist sharp edges */
   --radius: 0px;
-  --radius-sm: 2px;
-  --radius-md: 4px;
-  --radius-lg: 8px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-full: 0px;
 }
 
 /* Custom shadows as CSS variables (Tailwind v4 doesn't support box-shadow in @theme yet) */
 :root {
-  --shadow-hard: 4px 4px 0px 0px #181710;
-  --shadow-hard-sm: 2px 2px 0px 0px #181710;
-  --shadow-hard-lg: 8px 8px 0px 0px #181710;
+  --shadow-hard: 4px 4px 0px 0px #000000;
+  --shadow-hard-sm: 2px 2px 0px 0px #000000;
+  --shadow-hard-md: 6px 6px 0px 0px #000000;
+  --shadow-hard-lg: 8px 8px 0px 0px #000000;
+  --shadow-hard-xl: 12px 12px 0px 0px #000000;
 }
 
 @keyframes marquee {
@@ -46,7 +52,23 @@ body {
 
 /* Custom utility classes */
 .text-stroke {
-  -webkit-text-stroke: 1px #181710;
+  -webkit-text-stroke: 1px #000000;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #fffbf0;
+  border-left: 2px solid #000000;
+}
+::-webkit-scrollbar-thumb {
+  background: #ffdd57;
+  border: 2px solid #000000;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #000000;
 }
 
 .no-scrollbar::-webkit-scrollbar {
