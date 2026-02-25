@@ -29,7 +29,8 @@ const AdminDashboard = () => {
       email: "sarah.j@email.com",
       date: "2024-02-25",
       status: "active",
-      avatar: "https://ui-avatars.com/api/?name=Sarah+Johnson&background=ffde5c&color=181710&bold=true",
+      avatar:
+        "https://ui-avatars.com/api/?name=Sarah+Johnson&background=ffde5c&color=181710&bold=true",
     },
     {
       id: 2,
@@ -37,7 +38,8 @@ const AdminDashboard = () => {
       email: "mike.chen@email.com",
       date: "2024-02-24",
       status: "pending",
-      avatar: "https://ui-avatars.com/api/?name=Mike+Chen&background=a3e635&color=181710&bold=true",
+      avatar:
+        "https://ui-avatars.com/api/?name=Mike+Chen&background=a3e635&color=181710&bold=true",
     },
     {
       id: 3,
@@ -45,7 +47,8 @@ const AdminDashboard = () => {
       email: "emma.d@email.com",
       date: "2024-02-23",
       status: "active",
-      avatar: "https://ui-avatars.com/api/?name=Emma+Davis&background=f472b6&color=181710&bold=true",
+      avatar:
+        "https://ui-avatars.com/api/?name=Emma+Davis&background=f472b6&color=181710&bold=true",
     },
   ];
 
@@ -87,7 +90,10 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background-light" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
+    <div
+      className="min-h-screen bg-background-light"
+      style={{ fontFamily: "Space Grotesk, sans-serif" }}
+    >
       {/* Header */}
       <header className="h-20 border-b-2 border-black bg-white flex items-center justify-between px-6 sticky top-0 z-50">
         <div className="flex items-center gap-3">
@@ -96,9 +102,11 @@ const AdminDashboard = () => {
             onClick={() => setShowMobileSidebar(!showMobileSidebar)}
             className="md:hidden p-2 border-2 border-black bg-white hover:bg-primary transition-colors"
           >
-            <span className="material-symbols-outlined">{showMobileSidebar ? 'close' : 'menu'}</span>
+            <span className="material-symbols-outlined">
+              {showMobileSidebar ? "close" : "menu"}
+            </span>
           </button>
-          
+
           <div className="w-10 h-10 bg-primary border-2 border-black"></div>
           <h1 className="text-xl font-black uppercase">BARTERLY ADMIN</h1>
         </div>
@@ -151,7 +159,10 @@ const AdminDashboard = () => {
           {/* User Profile */}
           <div className="flex items-center gap-2">
             <img
-              src={user?.avatar?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || "Admin")}&background=ffde5c&color=181710&bold=true`}
+              src={
+                user?.avatar?.url ||
+                `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || "Admin")}&background=ffde5c&color=181710&bold=true`
+              }
               alt={user?.name}
               className="w-10 h-10 border-2 border-black object-cover"
             />
@@ -170,21 +181,28 @@ const AdminDashboard = () => {
         )}
 
         {/* Sidebar */}
-        <aside className={`
+        <aside
+          className={`
           w-60 bg-white border-r-2 border-black flex flex-col min-h-screen z-40
           fixed md:sticky md:top-20 inset-y-0 left-0 top-20
           transform transition-transform duration-300 ease-in-out
-          ${showMobileSidebar ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-        `}>
+          ${showMobileSidebar ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+        `}
+        >
           {/* Mini Profile */}
           <div className="p-6 border-b-2 border-black">
             <div className="flex flex-col items-center">
               <img
-                src={user?.avatar?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || "Admin")}&background=f472b6&color=181710&bold=true`}
+                src={
+                  user?.avatar?.url ||
+                  `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || "Admin")}&background=f472b6&color=181710&bold=true`
+                }
                 alt={user?.name}
                 className="w-20 h-20 border-2 border-black object-cover mb-3"
               />
-              <h3 className="font-black text-lg uppercase text-center">{user?.name}</h3>
+              <h3 className="font-black text-lg uppercase text-center">
+                {user?.name}
+              </h3>
               <span className="px-3 py-1 bg-tertiary border-2 border-black text-xs font-black uppercase mt-2">
                 ADMIN
               </span>
@@ -198,7 +216,9 @@ const AdminDashboard = () => {
               onClick={() => setShowMobileSidebar(false)}
               className="flex items-center gap-3 px-4 py-3 mb-2 border-2 border-black bg-primary font-black uppercase text-sm hover:translate-x-[2px] hover:translate-y-[2px] transition-transform"
             >
-              <span className="material-symbols-outlined text-xl">dashboard</span>
+              <span className="material-symbols-outlined text-xl">
+                dashboard
+              </span>
               Overview
             </Link>
 
@@ -219,7 +239,9 @@ const AdminDashboard = () => {
               onClick={() => setShowMobileSidebar(false)}
               className="flex items-center gap-3 px-4 py-3 mb-2 border-2 border-black bg-white font-bold uppercase text-sm hover:bg-neutral-surface hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
-              <span className="material-symbols-outlined text-xl">verified</span>
+              <span className="material-symbols-outlined text-xl">
+                verified
+              </span>
               Skills
               <span className="ml-auto px-2 py-0.5 bg-tertiary border border-black text-xs font-black">
                 5
@@ -231,7 +253,9 @@ const AdminDashboard = () => {
               onClick={() => setShowMobileSidebar(false)}
               className="flex items-center gap-3 px-4 py-3 mb-2 border-2 border-black bg-white font-bold uppercase text-sm hover:bg-neutral-surface hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
-              <span className="material-symbols-outlined text-xl">category</span>
+              <span className="material-symbols-outlined text-xl">
+                category
+              </span>
               Categories
             </Link>
 
@@ -240,7 +264,9 @@ const AdminDashboard = () => {
               onClick={() => setShowMobileSidebar(false)}
               className="flex items-center gap-3 px-4 py-3 mb-2 border-2 border-black bg-white font-bold uppercase text-sm hover:bg-neutral-surface hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
-              <span className="material-symbols-outlined text-xl">swap_horiz</span>
+              <span className="material-symbols-outlined text-xl">
+                swap_horiz
+              </span>
               Barters
             </Link>
 
@@ -261,7 +287,9 @@ const AdminDashboard = () => {
               onClick={() => setShowMobileSidebar(false)}
               className="flex items-center gap-3 px-4 py-3 mb-2 border-2 border-black bg-white font-bold uppercase text-sm hover:bg-neutral-surface hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
-              <span className="material-symbols-outlined text-xl">settings</span>
+              <span className="material-symbols-outlined text-xl">
+                settings
+              </span>
               Settings
             </Link>
           </nav>
@@ -287,46 +315,66 @@ const AdminDashboard = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             <div className="bg-white border-2 border-black p-6 shadow-hard hover:shadow-hard-lg hover:-translate-y-1 transition-all">
               <div className="flex items-center justify-between mb-2">
-                <span className="material-symbols-outlined text-3xl">group</span>
+                <span className="material-symbols-outlined text-3xl">
+                  group
+                </span>
                 <span className="px-2 py-1 bg-secondary border border-black text-xs font-black uppercase">
                   Total
                 </span>
               </div>
               <h3 className="text-3xl font-black mb-1">{stats.totalUsers}</h3>
-              <p className="text-sm font-bold uppercase text-neutral">Total Users</p>
+              <p className="text-sm font-bold uppercase text-neutral">
+                Total Users
+              </p>
             </div>
 
             <div className="bg-white border-2 border-black p-6 shadow-hard hover:shadow-hard-lg hover:-translate-y-1 transition-all">
               <div className="flex items-center justify-between mb-2">
-                <span className="material-symbols-outlined text-3xl">verified</span>
+                <span className="material-symbols-outlined text-3xl">
+                  verified
+                </span>
                 <span className="px-2 py-1 bg-primary border border-black text-xs font-black uppercase">
                   Total
                 </span>
               </div>
               <h3 className="text-3xl font-black mb-1">{stats.totalSkills}</h3>
-              <p className="text-sm font-bold uppercase text-neutral">Total Skills</p>
+              <p className="text-sm font-bold uppercase text-neutral">
+                Total Skills
+              </p>
             </div>
 
             <div className="bg-white border-2 border-black p-6 shadow-hard hover:shadow-hard-lg hover:-translate-y-1 transition-all">
               <div className="flex items-center justify-between mb-2">
-                <span className="material-symbols-outlined text-3xl">pending_actions</span>
+                <span className="material-symbols-outlined text-3xl">
+                  pending_actions
+                </span>
                 <span className="px-2 py-1 bg-tertiary border border-black text-xs font-black uppercase">
                   Active
                 </span>
               </div>
-              <h3 className="text-3xl font-black mb-1">{stats.activeRequests}</h3>
-              <p className="text-sm font-bold uppercase text-neutral">Active Requests</p>
+              <h3 className="text-3xl font-black mb-1">
+                {stats.activeRequests}
+              </h3>
+              <p className="text-sm font-bold uppercase text-neutral">
+                Active Requests
+              </p>
             </div>
 
             <div className="bg-white border-2 border-black p-6 shadow-hard hover:shadow-hard-lg hover:-translate-y-1 transition-all">
               <div className="flex items-center justify-between mb-2">
-                <span className="material-symbols-outlined text-3xl">check_circle</span>
+                <span className="material-symbols-outlined text-3xl">
+                  check_circle
+                </span>
                 <span className="px-2 py-1 bg-secondary border border-black text-xs font-black uppercase">
                   Total
                 </span>
               </div>
-              <h3 className="text-3xl font-black mb-1">{stats.completedTrades}</h3>
-              <p className="text-sm font-bold uppercase text-neutral">Completed Trades</p>
+              <h3 className="text-3xl font-black mb-1">
+                {stats.completedTrades}
+              </h3>
+              <p className="text-sm font-bold uppercase text-neutral">
+                Completed Trades
+              </p>
             </div>
           </div>
 
@@ -365,7 +413,7 @@ const AdminDashboard = () => {
                       </div>
                       <span
                         className={`px-3 py-1 ${getStatusColor(
-                          user.status
+                          user.status,
                         )} border-2 border-black text-xs font-black uppercase`}
                       >
                         {user.status}
@@ -400,7 +448,9 @@ const AdminDashboard = () => {
                           <p className="text-xs text-neutral mt-1">
                             Category: {skill.category}
                           </p>
-                          <p className="text-xs text-neutral">By: {skill.user}</p>
+                          <p className="text-xs text-neutral">
+                            By: {skill.user}
+                          </p>
                         </div>
                         <span className="px-3 py-1 bg-primary border-2 border-black text-xs font-black uppercase">
                           {skill.status}
@@ -426,22 +476,30 @@ const AdminDashboard = () => {
             <h2 className="text-xl font-black uppercase mb-4">Quick Actions</h2>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <button className="p-4 border-2 border-black bg-primary font-bold uppercase text-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard transition-all">
-                <span className="material-symbols-outlined text-2xl mb-2">add</span>
+                <span className="material-symbols-outlined text-2xl mb-2">
+                  add
+                </span>
                 <br />
                 New User
               </button>
               <button className="p-4 border-2 border-black bg-secondary font-bold uppercase text-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard transition-all">
-                <span className="material-symbols-outlined text-2xl mb-2">category</span>
+                <span className="material-symbols-outlined text-2xl mb-2">
+                  category
+                </span>
                 <br />
                 Add Category
               </button>
               <button className="p-4 border-2 border-black bg-tertiary font-bold uppercase text-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard transition-all">
-                <span className="material-symbols-outlined text-2xl mb-2">flag</span>
+                <span className="material-symbols-outlined text-2xl mb-2">
+                  flag
+                </span>
                 <br />
                 View Reports
               </button>
               <button className="p-4 border-2 border-black bg-background-light font-bold uppercase text-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard transition-all">
-                <span className="material-symbols-outlined text-2xl mb-2">analytics</span>
+                <span className="material-symbols-outlined text-2xl mb-2">
+                  analytics
+                </span>
                 <br />
                 Analytics
               </button>

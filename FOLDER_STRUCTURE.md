@@ -1,6 +1,7 @@
 # Folder Structure
 
 ## Overview
+
 The frontend is organized to support both **User Dashboard** and **Admin Dashboard** with role-based access control.
 
 ```
@@ -39,22 +40,26 @@ barterly-frontend/
 ## Route Structure
 
 ### Public Routes
+
 - `/` - Landing page (redirects to dashboard if logged in)
 - `/register` - User registration
 - `/login` - User login
 - `/verify-email` - Email verification
 
 ### User Routes (Protected)
+
 - `/dashboard` - User dashboard
 - Future: `/my-skills`, `/requests`, `/messages`, `/bookmarks`, `/profile`, `/settings`
 
 ### Admin Routes (Admin Only)
+
 - `/admin/dashboard` - Admin dashboard
 - Future: `/admin/users`, `/admin/skills`, `/admin/categories`, `/admin/barters`, `/admin/reports`, `/admin/settings`
 
 ## Role-Based Access Control
 
 ### User Model (Backend)
+
 ```javascript
 {
   role: {
@@ -66,14 +71,16 @@ barterly-frontend/
 ```
 
 ### Route Protection
+
 1. **ProtectedRoute** - Checks if user is authenticated
    - Redirects to `/login` if not authenticated
-   
+
 2. **AdminProtectedRoute** - Checks if user is admin
    - Redirects to `/login` if not authenticated
    - Redirects to `/dashboard` if authenticated but not admin
 
 ### Login Flow
+
 1. User logs in → Backend returns user data with role
 2. Frontend checks `user.role`:
    - If `role === "admin"` → Redirect to `/admin/dashboard`
@@ -82,6 +89,7 @@ barterly-frontend/
 ## Design System
 
 ### Neo-Brutalist Theme
+
 - **Primary Yellow**: `#ffde5c`
 - **Secondary Lime**: `#a3e635`
 - **Tertiary Pink**: `#f472b6`
@@ -90,11 +98,13 @@ barterly-frontend/
 - **Neutral Colors**: Added for dashboard surfaces
 
 ### Typography
+
 - **Auth Pages**: Plus Jakarta Sans
 - **Dashboards**: Space Grotesk
 - **Icons**: Material Symbols Outlined
 
 ### Styling Patterns
+
 - 2-4px solid black borders
 - Hard shadows (4px 4px 0px 0px #000)
 - Sharp corners (border-radius: 0px)
@@ -104,6 +114,7 @@ barterly-frontend/
 ## Next Steps
 
 ### User Dashboard
+
 - [ ] Create MySkills page (list, create, edit, delete)
 - [ ] Create Requests page (incoming/outgoing barter requests)
 - [ ] Create Messages page (real-time chat)
@@ -112,6 +123,7 @@ barterly-frontend/
 - [ ] Create Settings page (account settings)
 
 ### Admin Dashboard
+
 - [ ] Create Users management page
 - [ ] Create Skills moderation page
 - [ ] Create Categories management page
@@ -120,6 +132,7 @@ barterly-frontend/
 - [ ] Create System settings page
 
 ### Backend Integration
+
 - [ ] Replace placeholder data with real API calls
 - [ ] Implement skill CRUD operations
 - [ ] Implement barter request system

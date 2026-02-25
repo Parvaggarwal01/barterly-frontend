@@ -15,14 +15,22 @@ function App() {
   const location = useLocation();
 
   // Routes that don't need header/footer
-  const authRoutes = ["/register", "/login", "/verify-email", "/dashboard", "/admin"];
-  const isAuthRoute = authRoutes.some(route => location.pathname.startsWith(route));
+  const authRoutes = [
+    "/register",
+    "/login",
+    "/verify-email",
+    "/dashboard",
+    "/admin",
+  ];
+  const isAuthRoute = authRoutes.some((route) =>
+    location.pathname.startsWith(route),
+  );
 
   // Component to redirect authenticated users from landing page to appropriate dashboard
   const LandingPageWrapper = () => {
     const isAuthenticated = authService.isAuthenticated();
     if (!isAuthenticated) return <LandingPage />;
-    
+
     const user = authService.getUser();
     if (user?.role === "admin") {
       return <Navigate to="/admin/dashboard" replace />;
@@ -39,7 +47,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
-          
+
           {/* User Dashboard Routes */}
           <Route
             path="/dashboard"
@@ -49,7 +57,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          
+
           {/* Admin Dashboard Routes */}
           <Route
             path="/admin/dashboard"
@@ -59,7 +67,7 @@ function App() {
               </AdminProtectedRoute>
             }
           />
-          
+
           {/* Placeholder routes for future pages */}
           {/* User routes will be added here: /my-skills, /requests, /messages, etc. */}
           {/* Admin routes will be added here: /admin/users, /admin/skills, etc. */}
