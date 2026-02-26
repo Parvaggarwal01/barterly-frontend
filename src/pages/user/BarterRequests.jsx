@@ -5,6 +5,7 @@ import DashboardHeader from "../../components/layout/DashboardHeader";
 import authService from "../../services/authService";
 import barterService from "../../services/barterService";
 import reviewService from "../../services/reviewService";
+import chatService from "../../services/chatService";
 import BarterDetailPanel from "../../components/modals/BarterDetailPanel";
 import ReviewModal from "../../components/modals/ReviewModal";
 
@@ -343,7 +344,20 @@ const BarterRequests = () => {
           {/* Go to Chat for accepted barters */}
           {barter.status === "accepted" && (
             <button
-              onClick={() => navigate(`/chat/${barter.conversation || ""}`)}
+               onClick={async () => {
+                 try {
+                   // Create or fetch the conversation ID for this barter
+                   const participantId = isSender ? barter.receiver._id : barter.sender._id;
+                   const res = await chatService.createConversation(participantId, barter._id);
+                   const conversationId = res.data?.data?._id || res.data?._id;
+                   
+                   // Navigate to Messages page passing the targeted conversation ID in state
+                   navigate(`/messages`, { state: { activeConversationId: conversationId }});
+                 } catch (err) {
+                   console.error("Failed to jump to chat", err);
+                   alert("Failed to create or open chat conversation");
+                 }
+               }}
               className="bg-primary hover:bg-primary-dark text-black border-2 border-black px-4 py-2 text-xs font-bold uppercase transition-colors shadow-hard-sm flex items-center gap-1 active:translate-x-[2px] active:translate-y-[2px] active:shadow-hard-sm"
             >
               <span className="material-symbols-outlined text-sm font-bold">

@@ -1,10 +1,30 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import authService from "../../services/authService";
+import userService from "../../services/userService";
 
 const Sidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const user = authService.getCurrentUser();
+  const [user, setUser] = useState(() => authService.getUser() || {});
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await userService.getCurrentUserProfile();
+        const userData = response.data?.data?.user || response.data?.user || response.data;
+        if (userData) {
+          setUser(userData);
+          // Update local storage so other components get the fresh data
+          const currentLocal = authService.getUser() || {};
+          localStorage.setItem("user", JSON.stringify({ ...currentLocal, ...userData }));
+        }
+      } catch (error) {
+        console.error("Failed to fetch user data for sidebar:", error);
+      }
+    };
+    fetchUserData();
+  }, []);
 
   const handleLogout = () => {
     authService.logout();
@@ -17,11 +37,10 @@ const Sidebar = ({ isOpen, onClose }) => {
     { path: "/", icon: "home", label: "HOME" },
     { path: "/dashboard", icon: "dashboard", label: "OVERVIEW" },
     { path: "/my-skills", icon: "lightbulb", label: "MY SKILLS" },
-    { path: "/requests", icon: "swap_calls", label: "REQUESTS", badge: 3 },
-    { path: "/messages", icon: "chat", label: "MESSAGES", badge: 5 },
+    { path: "/requests", icon: "swap_calls", label: "REQUESTS"},
+    { path: "/messages", icon: "chat", label: "MESSAGES"},
     { path: "/bookmarks", icon: "bookmark", label: "BOOKMARKS" },
     { path: "/profile", icon: "person", label: "PROFILE" },
-    { path: "/settings", icon: "settings", label: "SETTINGS" },
   ];
 
   return (
@@ -36,16 +55,16 @@ const Sidebar = ({ isOpen, onClose }) => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed md:static left-0 top-0 h-full w-[240px] bg-white border-r-2 border-black flex flex-col shrink-0 overflow-y-auto z-50 transition-transform duration-300 ${
+        className={`fixed md:static left-0 top-0 h-[92vh] w-[240px] bg-white border-r-2 border-black flex flex-col shrink-0 overflow-y-auto z-50 transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
         {/* User Profile Section */}
         <div className="p-6 border-b-2 border-black flex flex-col items-center text-center bg-neutral-50">
           <div className="w-20 h-20 border-2 border-black mb-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
-            {user?.avatar ? (
+            {user?.avatar?.url || (user?.avatar && typeof user.avatar === 'string') ? (
               <img
-                src={user.avatar}
+                src={user.avatar.url || user.avatar}
                 alt="User Avatar"
                 className="w-full h-full object-cover"
               />
@@ -60,9 +79,6 @@ const Sidebar = ({ isOpen, onClose }) => {
           <h3 className="font-bold text-lg leading-tight uppercase">
             {user?.name || "USER"}
           </h3>
-          <span className="text-xs font-bold bg-black text-white px-2 py-0.5 mt-1">
-            PRO TRADER
-          </span>
         </div>
 
         {/* Navigation */}
