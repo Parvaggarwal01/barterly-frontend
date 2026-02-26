@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import barterService from "../../services/barterService";
 import reviewService from "../../services/reviewService";
 import ReviewModal from "./ReviewModal";
+import ReportModal from "./ReportModal";
 
 const BarterDetailPanel = ({
   barterId,
@@ -17,6 +18,7 @@ const BarterDetailPanel = ({
   const [actionLoading, setActionLoading] = useState(null); // 'accept'|'reject'|'cancel'|'complete'
   const [reviewStatus, setReviewStatus] = useState(null); // { canReview, reviewed, review }
   const [showReviewModal, setShowReviewModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   const fetchBarter = useCallback(async () => {
     try {
@@ -130,6 +132,11 @@ const BarterDetailPanel = ({
 
   const isSender = currentUser && barter?.sender?._id === currentUser._id;
   const isReceiver = currentUser && barter?.receiver?._id === currentUser._id;
+  const reportedUser = barter
+    ? isSender
+      ? barter.receiver
+      : barter.sender
+    : null;
 
   return (
     <>
@@ -444,6 +451,19 @@ const BarterDetailPanel = ({
                 </button>
               )}
 
+              {/* Report — active (accepted) barters only */}
+              {barter.status === "accepted" && reportedUser && (
+                <button
+                  onClick={() => setShowReportModal(true)}
+                  className="bg-white hover:bg-accent-red hover:text-white text-black border-2 border-black px-5 py-2.5 text-xs font-bold uppercase transition-colors shadow-hard-sm flex items-center gap-1 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+                >
+                  <span className="material-symbols-outlined text-sm">
+                    flag
+                  </span>
+                  Report
+                </button>
+              )}
+
               {/* Leave Review — completed barters */}
               {barter.status === "completed" &&
                 reviewStatus &&
@@ -487,6 +507,17 @@ const BarterDetailPanel = ({
             fetchReviewStatus();
             onActionSuccess();
           }}
+        />
+      )}
+
+      {/* Report Modal */}
+      {showReportModal && barter && reportedUser && (
+        <ReportModal
+          barter={barter}
+          currentUser={currentUser}
+          reportedUser={reportedUser}
+          onClose={() => setShowReportModal(false)}
+          onSuccess={() => setShowReportModal(false)}
         />
       )}
     </>

@@ -12,6 +12,7 @@ import MySkills from "./pages/user/MySkills";
 import PostSkill from "./pages/user/PostSkill";
 import BarterRequests from "./pages/user/BarterRequests";
 import Bookmarks from "./pages/user/Bookmarks";
+import Profile from "./pages/user/Profile";
 import AdminDashboard from "./pages/admin/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
@@ -29,6 +30,7 @@ function App() {
     "/post-skill",
     "/requests",
     "/bookmarks",
+    "/profile",
     "/admin",
   ];
   const isAuthRoute = authRoutes.some((route) =>
@@ -85,6 +87,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Bookmarks />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
               </ProtectedRoute>
             }
           />
