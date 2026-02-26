@@ -16,9 +16,10 @@ const PostSkill = () => {
     title: "",
     category: "",
     description: "",
-    whatWillYouTeach: "",
+    learningOutcomes: [""],
 
     // Step 2: Details
+    prerequisites: "",
     tags: "",
     level: "beginner",
     deliveryMode: "online",
@@ -53,6 +54,28 @@ const PostSkill = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleLearningOutcomeChange = (index, value) => {
+    const newOutcomes = [...formData.learningOutcomes];
+    newOutcomes[index] = value;
+    setFormData((prev) => ({ ...prev, learningOutcomes: newOutcomes }));
+  };
+
+  const addLearningOutcome = () => {
+    setFormData((prev) => ({
+      ...prev,
+      learningOutcomes: [...prev.learningOutcomes, ""],
+    }));
+  };
+
+  const removeLearningOutcome = (index) => {
+    if (formData.learningOutcomes.length > 1) {
+      const newOutcomes = formData.learningOutcomes.filter(
+        (_, i) => i !== index,
+      );
+      setFormData((prev) => ({ ...prev, learningOutcomes: newOutcomes }));
+    }
+  };
+
   const handleNext = () => {
     if (currentStep < 3) {
       setCurrentStep(currentStep + 1);
@@ -72,8 +95,12 @@ const PostSkill = () => {
     try {
       const payload = {
         title: formData.title,
-        description: `${formData.description}\n\nWhat You'll Learn:\n${formData.whatWillYouTeach}`,
+        description: formData.description,
         category: formData.category,
+        learningOutcomes: formData.learningOutcomes.filter(
+          (outcome) => outcome.trim() !== "",
+        ),
+        prerequisites: formData.prerequisites,
         tags: formData.tags
           .split(",")
           .map((tag) => tag.trim())
@@ -323,19 +350,49 @@ const PostSkill = () => {
                 </div>
                 <div>
                   <label className="block font-black text-lg uppercase mb-3 tracking-wide">
-                    What Will You Teach?{" "}
+                    What Will Students Learn?{" "}
                     <span className="text-primary text-2xl leading-none align-middle">
                       *
                     </span>
                   </label>
-                  <textarea
-                    className="w-full bg-white border-2 border-black p-4 font-bold placeholder:text-gray-400 focus:outline-none focus:ring-0 focus:bg-primary/20 focus:border-black focus:shadow-[4px_4px_0px_0px_#000] transition-all duration-200 resize-none min-h-[120px]"
-                    placeholder="List the specific takeaways or learning outcomes..."
-                    required
-                    name="whatWillYouTeach"
-                    value={formData.whatWillYouTeach}
-                    onChange={handleInputChange}
-                  ></textarea>
+                  <div className="space-y-3">
+                    {formData.learningOutcomes.map((outcome, index) => (
+                      <div key={index} className="flex gap-2 items-start">
+                        <div className="w-8 h-8 border-2 border-black bg-primary flex items-center justify-center font-black text-sm flex-shrink-0 mt-2">
+                          {index + 1}
+                        </div>
+                        <input
+                          className="flex-1 h-12 bg-white border-2 border-black px-4 font-medium placeholder:text-gray-400 focus:outline-none focus:ring-0 focus:bg-primary/20 focus:border-black focus:shadow-[4px_4px_0px_0px_#000] transition-all duration-200"
+                          placeholder="e.g., Master advanced React hooks and patterns"
+                          type="text"
+                          value={outcome}
+                          onChange={(e) =>
+                            handleLearningOutcomeChange(index, e.target.value)
+                          }
+                          required={index === 0}
+                        />
+                        {formData.learningOutcomes.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => removeLearningOutcome(index)}
+                            className="w-12 h-12 border-2 border-black bg-red-500 text-white hover:bg-red-600 transition-colors flex items-center justify-center flex-shrink-0"
+                          >
+                            <span className="material-symbols-outlined">
+                              close
+                            </span>
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={addLearningOutcome}
+                      className="w-full h-12 border-2 border-dashed border-black bg-white hover:bg-primary/20 transition-colors flex items-center justify-center gap-2 font-bold uppercase text-sm"
+                    >
+                      <span className="material-symbols-outlined">add</span>
+                      Add Learning Outcome
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
@@ -343,6 +400,22 @@ const PostSkill = () => {
             {/* Step 2: Details */}
             {currentStep === 2 && (
               <div className="space-y-8">
+                <div>
+                  <label className="block font-black text-lg uppercase mb-3 tracking-wide">
+                    Prerequisites
+                  </label>
+                  <textarea
+                    className="w-full bg-white border-2 border-black p-4 font-medium placeholder:text-gray-400 focus:outline-none focus:ring-0 focus:bg-primary/20 focus:border-black focus:shadow-[4px_4px_0px_0px_#000] transition-all duration-200 resize-none min-h-[100px]"
+                    placeholder="What should learners know before starting? (e.g., Basic JavaScript knowledge)"
+                    name="prerequisites"
+                    value={formData.prerequisites}
+                    onChange={handleInputChange}
+                  ></textarea>
+                  <p className="text-xs font-bold mt-2 text-right uppercase tracking-wider opacity-60">
+                    Optional but helpful for students
+                  </p>
+                </div>
+
                 <div>
                   <label className="block font-black text-lg uppercase mb-3 tracking-wide">
                     Tags (comma-separated)

@@ -14,6 +14,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   const isActive = (path) => location.pathname === path;
 
   const navItems = [
+    { path: "/", icon: "home", label: "HOME" },
     { path: "/dashboard", icon: "dashboard", label: "OVERVIEW" },
     { path: "/my-skills", icon: "lightbulb", label: "MY SKILLS" },
     { path: "/requests", icon: "swap_calls", label: "REQUESTS", badge: 3 },

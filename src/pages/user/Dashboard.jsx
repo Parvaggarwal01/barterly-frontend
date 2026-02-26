@@ -90,7 +90,9 @@ const Dashboard = () => {
   return (
     <div className="font-display bg-[#FFFBF0] min-h-screen flex flex-col">
       {/* Dashboard Header */}
-      <DashboardHeader onMenuClick={() => setShowMobileSidebar(!showMobileSidebar)} />
+      <DashboardHeader
+        onMenuClick={() => setShowMobileSidebar(!showMobileSidebar)}
+      />
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
@@ -274,15 +276,23 @@ const Dashboard = () => {
                 {loading ? (
                   <div className="flex items-center justify-center py-12">
                     <div className="text-center">
-                      <span className="material-symbols-outlined text-4xl animate-spin">refresh</span>
-                      <p className="font-bold uppercase text-sm mt-2">Loading skills...</p>
+                      <span className="material-symbols-outlined text-4xl animate-spin">
+                        refresh
+                      </span>
+                      <p className="font-bold uppercase text-sm mt-2">
+                        Loading skills...
+                      </p>
                     </div>
                   </div>
                 ) : mySkills.length === 0 ? (
                   <div className="bg-white border-2 border-black p-8 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                    <span className="material-symbols-outlined text-6xl opacity-20 mb-4">lightbulb</span>
+                    <span className="material-symbols-outlined text-6xl opacity-20 mb-4">
+                      lightbulb
+                    </span>
                     <p className="font-bold uppercase mb-2">No skills yet</p>
-                    <p className="text-sm text-gray-600 mb-4">Start by adding your first skill</p>
+                    <p className="text-sm text-gray-600 mb-4">
+                      Start by adding your first skill
+                    </p>
                     <Link
                       to="/post-skill"
                       className="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-black border-2 border-black px-4 py-2 font-bold uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
@@ -295,13 +305,19 @@ const Dashboard = () => {
                   <div className="grid grid-cols-1 gap-4">
                     {mySkills.slice(0, 3).map((skill) => {
                       // Determine category color
-                      const categoryColor = skill.category?.name 
-                        ? skill.category.name.toLowerCase().includes('tech') || skill.category.name.toLowerCase().includes('coding')
-                          ? 'bg-accent-pink'
-                          : skill.category.name.toLowerCase().includes('creative') || skill.category.name.toLowerCase().includes('design')
-                          ? 'bg-accent-teal'
-                          : 'bg-primary'
-                        : 'bg-gray-200';
+                      const categoryColor = skill.category?.name
+                        ? skill.category.name.toLowerCase().includes("tech") ||
+                          skill.category.name.toLowerCase().includes("coding")
+                          ? "bg-accent-pink"
+                          : skill.category.name
+                                .toLowerCase()
+                                .includes("creative") ||
+                              skill.category.name
+                                .toLowerCase()
+                                .includes("design")
+                            ? "bg-accent-teal"
+                            : "bg-primary"
+                        : "bg-gray-200";
 
                       return (
                         <div
@@ -318,25 +334,40 @@ const Dashboard = () => {
                               </span>
                             </Link>
                           </div>
-                          <span className={`inline-block ${categoryColor} border border-black text-[10px] font-bold uppercase px-2 py-0.5 mb-2`}>
-                            {skill.category?.name || 'Uncategorized'}
+                          <span
+                            className={`inline-block ${categoryColor} border border-black text-[10px] font-bold uppercase px-2 py-0.5 mb-2`}
+                          >
+                            {skill.category?.name || "Uncategorized"}
                           </span>
                           <h3 className="text-xl font-bold leading-tight mb-1 pr-16">
                             {skill.title}
                           </h3>
                           <p className="text-xs text-gray-600 font-bold mb-2">
-                            Level: <span className="uppercase">{skill.level}</span>
+                            Level:{" "}
+                            <span className="uppercase">{skill.level}</span>
                           </p>
                           <div className="flex items-center gap-2 text-xs font-bold text-gray-500">
-                            <span className="material-symbols-outlined text-sm">visibility</span>
-                            <span className={skill.isActive ? 'text-accent-teal' : 'text-gray-400'}>
-                              {skill.isActive ? 'Active' : 'Inactive'}
+                            <span className="material-symbols-outlined text-sm">
+                              visibility
                             </span>
-                            {skill.verificationStatus === 'approved' && (
+                            <span
+                              className={
+                                skill.isActive
+                                  ? "text-accent-teal"
+                                  : "text-gray-400"
+                              }
+                            >
+                              {skill.isActive ? "Active" : "Inactive"}
+                            </span>
+                            {skill.verificationStatus === "approved" && (
                               <>
                                 <span className="mx-1">•</span>
-                                <span className="material-symbols-outlined text-sm text-accent-teal">verified</span>
-                                <span className="text-accent-teal">Verified</span>
+                                <span className="material-symbols-outlined text-sm text-accent-teal">
+                                  verified
+                                </span>
+                                <span className="text-accent-teal">
+                                  Verified
+                                </span>
                               </>
                             )}
                           </div>

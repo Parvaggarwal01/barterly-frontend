@@ -1,17 +1,19 @@
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import LandingPage from "./pages/LandingPage";
+import BrowseSkills from "./pages/BrowseSkills";
+import SkillDetail from "./pages/SkillDetail";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import VerifyEmail from "./pages/auth/VerifyEmail";
 import UserDashboard from "./pages/user/Dashboard";
 import MySkills from "./pages/user/MySkills";
 import PostSkill from "./pages/user/PostSkill";
+import BarterRequests from "./pages/user/BarterRequests";
 import AdminDashboard from "./pages/admin/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
-import authService from "./services/authService";
 
 function App() {
   const location = useLocation();
@@ -24,30 +26,21 @@ function App() {
     "/dashboard",
     "/my-skills",
     "/post-skill",
+    "/requests",
     "/admin",
   ];
   const isAuthRoute = authRoutes.some((route) =>
     location.pathname.startsWith(route),
   );
 
-  // Component to redirect authenticated users from landing page to appropriate dashboard
-  const LandingPageWrapper = () => {
-    const isAuthenticated = authService.isAuthenticated();
-    if (!isAuthenticated) return <LandingPage />;
-
-    const user = authService.getUser();
-    if (user?.role === "admin") {
-      return <Navigate to="/admin/dashboard" replace />;
-    }
-    return <Navigate to="/dashboard" replace />;
-  };
-
   return (
     <div className="min-h-screen flex flex-col">
       {!isAuthRoute && <Header />}
       <main className="flex-1">
         <Routes>
-          <Route path="/" element={<LandingPageWrapper />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/browse" element={<BrowseSkills />} />
+          <Route path="/skills/:id" element={<SkillDetail />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
@@ -74,6 +67,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <PostSkill />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/requests"
+            element={
+              <ProtectedRoute>
+                <BarterRequests />
               </ProtectedRoute>
             }
           />
