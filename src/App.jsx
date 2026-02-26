@@ -12,6 +12,7 @@ import MySkills from "./pages/user/MySkills";
 import PostSkill from "./pages/user/PostSkill";
 import BarterRequests from "./pages/user/BarterRequests";
 import Bookmarks from "./pages/user/Bookmarks";
+import Messages from "./pages/user/Messages";
 import Profile from "./pages/user/Profile";
 import AdminDashboard from "./pages/admin/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -30,6 +31,7 @@ function App() {
     "/post-skill",
     "/requests",
     "/bookmarks",
+    "/messages",
     "/profile",
     "/admin",
   ];
@@ -95,6 +97,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/messages"
+            element={
+              <ProtectedRoute>
+                <Messages />
               </ProtectedRoute>
             }
           />
