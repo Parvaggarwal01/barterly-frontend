@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import skillService from "../services/skillService";
 import authService from "../services/authService";
+import bookmarkService from "../services/bookmarkService";
 import SendBarterModal from "../components/modals/SendBarterModal";
 
 const SkillDetail = () => {
@@ -11,6 +12,8 @@ const SkillDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showBarterModal, setShowBarterModal] = useState(false);
+  const [bookmarked, setBookmarked] = useState(false);
+  const [bookmarkLoading, setBookmarkLoading] = useState(false);
   const currentUser = authService.getUser();
 
   useEffect(() => {
@@ -31,6 +34,33 @@ const SkillDetail = () => {
 
     fetchSkill();
   }, [id]);
+
+  // Check bookmark status once skill is loaded and user is logged in
+  useEffect(() => {
+    if (!skill || !currentUser) return;
+    if (skill.offeredBy?._id === currentUser._id) return; // own skill
+    bookmarkService
+      .checkBookmarkStatus(skill._id)
+      .then((res) => setBookmarked(res.data?.bookmarked ?? false))
+      .catch(() => {});
+  }, [skill, currentUser]);
+
+  const handleBookmarkToggle = async () => {
+    if (!currentUser) {
+      alert("Please login to bookmark skills.");
+      navigate("/login");
+      return;
+    }
+    setBookmarkLoading(true);
+    try {
+      const res = await bookmarkService.toggleBookmark(skill._id);
+      setBookmarked(res.data?.bookmarked ?? !bookmarked);
+    } catch (err) {
+      console.error("Bookmark error:", err);
+    } finally {
+      setBookmarkLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -292,9 +322,27 @@ const SkillDetail = () => {
                       arrow_forward
                     </span>
                   </button>
-                  <button className="w-full py-3 bg-transparent border-2 border-black text-black font-bold uppercase tracking-wider text-sm hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 group">
-                    <span className="material-symbols-outlined">bookmark</span>
-                    Bookmark this skill
+                  <button
+                    onClick={handleBookmarkToggle}
+                    disabled={bookmarkLoading || skill.offeredBy?._id === currentUser?._id}
+                    className={`w-full py-3 border-2 border-black font-bold uppercase tracking-wider text-sm transition-colors flex items-center justify-center gap-2 group disabled:opacity-40 ${
+                      bookmarked
+                        ? "bg-primary hover:bg-primary/80"
+                        : "bg-transparent hover:bg-neutral-100"
+                    }`}
+                  >
+                    <span className="material-symbols-outlined">
+                      {bookmarkLoading
+                        ? "hourglass_empty"
+                        : bookmarked
+                          ? "bookmark_added"
+                          : "bookmark"}
+                    </span>
+                    {bookmarkLoading
+                      ? "Saving..."
+                      : bookmarked
+                        ? "Bookmarked"
+                        : "Bookmark this skill"}
                   </button>
                 </div>
               </div>

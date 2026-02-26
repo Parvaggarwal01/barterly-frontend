@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import barterService from "../../services/barterService";
+import reviewService from "../../services/reviewService";
+import ReviewModal from "./ReviewModal";
 
 const BarterDetailPanel = ({
   barterId,
@@ -13,6 +15,8 @@ const BarterDetailPanel = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [actionLoading, setActionLoading] = useState(null); // 'accept'|'reject'|'cancel'|'complete'
+  const [reviewStatus, setReviewStatus] = useState(null); // { canReview, reviewed, review }
+  const [showReviewModal, setShowReviewModal] = useState(false);
 
   const fetchBarter = useCallback(async () => {
     try {
@@ -27,9 +31,19 @@ const BarterDetailPanel = ({
     }
   }, [barterId]);
 
+  const fetchReviewStatus = useCallback(async () => {
+    try {
+      const res = await reviewService.checkReviewStatus(barterId);
+      setReviewStatus(res.data);
+    } catch {
+      // Non-critical — silently ignore
+    }
+  }, [barterId]);
+
   useEffect(() => {
     fetchBarter();
-  }, [fetchBarter]);
+    fetchReviewStatus();
+  }, [fetchBarter, fetchReviewStatus]);
 
   // Close on Escape key
   useEffect(() => {
@@ -396,16 +410,15 @@ const BarterDetailPanel = ({
               )}
 
               {/* Cancel — sender only, pending or accepted */}
-              {isSender &&
-                ["pending", "accepted"].includes(barter.status) && (
-                  <button
-                    onClick={handleCancel}
-                    disabled={!!actionLoading}
-                    className="bg-gray-200 hover:bg-gray-300 text-black border-2 border-black px-5 py-2.5 text-xs font-bold uppercase transition-colors shadow-hard-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none disabled:opacity-60"
-                  >
-                    {actionLoading === "cancel" ? "Cancelling…" : "Cancel"}
-                  </button>
-                )}
+              {isSender && ["pending", "accepted"].includes(barter.status) && (
+                <button
+                  onClick={handleCancel}
+                  disabled={!!actionLoading}
+                  className="bg-gray-200 hover:bg-gray-300 text-black border-2 border-black px-5 py-2.5 text-xs font-bold uppercase transition-colors shadow-hard-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none disabled:opacity-60"
+                >
+                  {actionLoading === "cancel" ? "Cancelling…" : "Cancel"}
+                </button>
+              )}
 
               {/* Complete — both, accepted */}
               {barter.status === "accepted" && (
@@ -421,9 +434,7 @@ const BarterDetailPanel = ({
               {/* Chat — accepted */}
               {barter.status === "accepted" && (
                 <button
-                  onClick={() =>
-                    navigate(`/chat/${barter.conversation || ""}`)
-                  }
+                  onClick={() => navigate(`/chat/${barter.conversation || ""}`)}
                   className="bg-primary hover:bg-primary-dark text-black border-2 border-black px-5 py-2.5 text-xs font-bold uppercase transition-colors shadow-hard-sm flex items-center gap-1 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
                 >
                   <span className="material-symbols-outlined text-sm font-bold">
@@ -432,6 +443,28 @@ const BarterDetailPanel = ({
                   Chat
                 </button>
               )}
+
+              {/* Leave Review — completed barters */}
+              {barter.status === "completed" &&
+                reviewStatus &&
+                (reviewStatus.reviewed ? (
+                  <span className="flex items-center gap-1.5 text-xs font-bold text-green-600 border-2 border-green-500 px-4 py-2.5 bg-green-50">
+                    <span className="material-symbols-outlined text-sm">
+                      verified
+                    </span>
+                    Reviewed
+                  </span>
+                ) : (
+                  <button
+                    onClick={() => setShowReviewModal(true)}
+                    className="bg-primary hover:bg-primary-dark text-black border-2 border-black px-5 py-2.5 text-xs font-bold uppercase transition-colors shadow-hard-sm flex items-center gap-1.5 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+                  >
+                    <span className="material-symbols-outlined text-sm font-bold">
+                      star
+                    </span>
+                    Leave Review
+                  </button>
+                ))}
             </div>
 
             <button
@@ -443,6 +476,19 @@ const BarterDetailPanel = ({
           </div>
         )}
       </div>
+
+      {/* Review Modal — rendered outside panel so z-index stacks on top */}
+      {showReviewModal && barter && (
+        <ReviewModal
+          barter={barter}
+          currentUser={currentUser}
+          onClose={() => setShowReviewModal(false)}
+          onSuccess={() => {
+            fetchReviewStatus();
+            onActionSuccess();
+          }}
+        />
+      )}
     </>
   );
 };
