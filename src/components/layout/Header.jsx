@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import authService from "../../services/authService";
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const isAuthenticated = authService.isAuthenticated();
+  const user = authService.getUser();
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b-4 border-border-dark px-6 py-4">
@@ -30,17 +33,32 @@ const Header = () => {
           >
             Browse Skills
           </Link>
-          <Link
-            to="/login"
-            className="font-bold text-sm uppercase hover:underline decoration-2 underline-offset-4"
-          >
-            Login
-          </Link>
-          <Link to="/register">
-            <button className="bg-primary text-border-dark font-bold text-sm px-6 py-3 border-2 border-border-dark shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard-sm transition-all uppercase">
-              Get Started
-            </button>
-          </Link>
+          {isAuthenticated ? (
+            <Link
+              to={user?.role === "admin" ? "/admin/dashboard" : "/dashboard"}
+            >
+              <button className="bg-primary text-border-dark font-bold text-sm px-6 py-3 border-2 border-border-dark shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard-sm transition-all uppercase flex items-center gap-2">
+                <span className="material-symbols-outlined text-lg">
+                  dashboard
+                </span>
+                Dashboard
+              </button>
+            </Link>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="font-bold text-sm uppercase hover:underline decoration-2 underline-offset-4"
+              >
+                Login
+              </Link>
+              <Link to="/register">
+                <button className="bg-primary text-border-dark font-bold text-sm px-6 py-3 border-2 border-border-dark shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard-sm transition-all uppercase">
+                  Get Started
+                </button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Icon */}
@@ -62,18 +80,34 @@ const Header = () => {
           >
             Browse Skills
           </Link>
-          <Link
-            to="/login"
-            className="font-bold text-sm uppercase hover:underline decoration-2 underline-offset-4"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Login
-          </Link>
-          <Link to="/register" onClick={() => setIsMobileMenuOpen(false)}>
-            <button className="w-full bg-primary text-border-dark font-bold text-sm px-6 py-3 border-2 border-border-dark shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard-sm transition-all uppercase">
-              Get Started
-            </button>
-          </Link>
+          {isAuthenticated ? (
+            <Link
+              to={user?.role === "admin" ? "/admin/dashboard" : "/dashboard"}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <button className="w-full bg-primary text-border-dark font-bold text-sm px-6 py-3 border-2 border-border-dark shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard-sm transition-all uppercase flex items-center justify-center gap-2">
+                <span className="material-symbols-outlined text-lg">
+                  dashboard
+                </span>
+                Dashboard
+              </button>
+            </Link>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="font-bold text-sm uppercase hover:underline decoration-2 underline-offset-4"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Login
+              </Link>
+              <Link to="/register" onClick={() => setIsMobileMenuOpen(false)}>
+                <button className="w-full bg-primary text-border-dark font-bold text-sm px-6 py-3 border-2 border-border-dark shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard-sm transition-all uppercase">
+                  Get Started
+                </button>
+              </Link>
+            </>
+          )}
         </div>
       )}
     </header>

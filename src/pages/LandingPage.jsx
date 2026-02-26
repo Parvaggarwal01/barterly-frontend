@@ -205,7 +205,7 @@ const LandingPage = () => {
               Categories
             </h2>
             <Link
-              to="/categories"
+              to="/browse"
               className="text-lg font-bold uppercase underline decoration-4 underline-offset-4 hover:text-primary transition-colors"
             >
               See All Categories →
@@ -265,7 +265,7 @@ const LandingPage = () => {
             ].map((category, index) => (
               <Link
                 key={index}
-                to={`/categories/${category.name.toLowerCase()}`}
+                to="/browse"
                 className="group bg-white border-2 border-border-dark p-6 shadow-hard hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] transition-all flex flex-col items-center justify-center text-center gap-4 h-48"
               >
                 <span className="text-5xl filter drop-shadow-[2px_2px_0_rgba(0,0,0,1)] group-hover:scale-110 transition-transform duration-200">
