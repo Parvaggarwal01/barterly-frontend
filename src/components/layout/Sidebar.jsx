@@ -36,7 +36,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed md:static left-0 top-0 h-[92vh] w-[240px] bg-white border-r-2 border-black flex flex-col shrink-0 overflow-y-auto z-50 transition-transform duration-300 ${
+        className={`fixed md:static left-0 top-0 h-full w-[240px] bg-white border-r-2 border-black flex flex-col shrink-0 overflow-y-auto z-50 transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >

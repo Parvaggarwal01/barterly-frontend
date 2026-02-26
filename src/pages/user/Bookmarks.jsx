@@ -51,7 +51,7 @@ const Bookmarks = () => {
   };
 
   return (
-    <div className="font-display bg-[#FFFBF0] min-h-screen flex flex-col">
+    <div className="font-display bg-[#FFFBF0] h-screen flex flex-col">
       <DashboardHeader
         onMenuClick={() => setShowMobileSidebar(!showMobileSidebar)}
       />

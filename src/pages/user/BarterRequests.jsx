@@ -399,7 +399,9 @@ const BarterRequests = () => {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-neutral-surface">
+    <div className="font-display h-screen bg-[#FFFBF0] flex flex-col overflow-hidden">
+      <DashboardHeader onMenuClick={() => setShowMobileSidebar(true)} />
+      <div className="flex flex-1 overflow-hidden relative">
       {/* Review Modal */}
       {selectedReviewBarter && (
         <ReviewModal
@@ -434,17 +436,12 @@ const BarterRequests = () => {
       )}
       {/* Sidebar */}
       <Sidebar
-        showMobileSidebar={showMobileSidebar}
-        setShowMobileSidebar={setShowMobileSidebar}
+        isOpen={showMobileSidebar}
+        onClose={() => setShowMobileSidebar(false)}
       />
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <DashboardHeader
-          showMobileSidebar={showMobileSidebar}
-          setShowMobileSidebar={setShowMobileSidebar}
-        />
-
         <main className="flex-1 overflow-y-auto p-6 md:p-10 relative">
           <div className="max-w-5xl mx-auto flex flex-col gap-8">
             {/* Header */}
@@ -596,6 +593,7 @@ const BarterRequests = () => {
             )}
           </div>
         </main>
+      </div>
       </div>
     </div>
   );

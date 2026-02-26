@@ -94,7 +94,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="font-display bg-[#FFFBF0] min-h-screen flex flex-col">
+    <div className="font-display bg-[#FFFBF0] h-screen flex flex-col">
       {/* Dashboard Header */}
       <DashboardHeader
         onMenuClick={() => setShowMobileSidebar(!showMobileSidebar)}

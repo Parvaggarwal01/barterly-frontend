@@ -176,7 +176,7 @@ const MySkills = () => {
   });
 
   return (
-    <div className="min-h-screen bg-[#FFFBF0] flex flex-col overflow-hidden font-[&#39;Space_Grotesk&#39;,sans-serif]">
+    <div className="h-screen bg-[#FFFBF0] flex flex-col overflow-hidden font-display">
       <DashboardHeader onMenuClick={() => setShowMobileSidebar(true)} />
 
       <div className="flex flex-1 overflow-hidden">
