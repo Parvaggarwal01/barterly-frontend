@@ -4,7 +4,9 @@ import Sidebar from "../../components/layout/Sidebar";
 import DashboardHeader from "../../components/layout/DashboardHeader";
 import authService from "../../services/authService";
 import barterService from "../../services/barterService";
+import reviewService from "../../services/reviewService";
 import BarterDetailPanel from "../../components/modals/BarterDetailPanel";
+import ReviewModal from "../../components/modals/ReviewModal";
 
 const BarterRequests = () => {
   const navigate = useNavigate();
@@ -18,6 +20,9 @@ const BarterRequests = () => {
   const [activeTab, setActiveTab] = useState("received"); // received, sent, active, completed
   const [stats, setStats] = useState(null);
   const [selectedBarterId, setSelectedBarterId] = useState(null);
+  const [selectedReviewBarter, setSelectedReviewBarter] = useState(null);
+  const [existingReview, setExistingReview] = useState(null); // review to view in read-only mode
+  const [myReviewsMap, setMyReviewsMap] = useState({}); // { barterId: review }
 
   // Pagination
   const [pagination, setPagination] = useState({
@@ -36,6 +41,7 @@ const BarterRequests = () => {
     setCurrentUser(user);
     fetchData();
     fetchStats();
+    fetchMyReviews();
   }, [navigate, activeTab, pagination.page]);
 
   const fetchData = async () => {
@@ -85,6 +91,22 @@ const BarterRequests = () => {
       setStats(response.data);
     } catch (err) {
       console.error("Error fetching stats:", err);
+    }
+  };
+
+  const fetchMyReviews = async () => {
+    try {
+      const response = await reviewService.getMyReviews({ limit: 100 });
+      const reviews = response.data?.reviews || [];
+      // Build map of barterId -> review
+      const map = {};
+      reviews.forEach((r) => {
+        const barterId = r.barter?._id || r.barter;
+        if (barterId) map[barterId] = r;
+      });
+      setMyReviewsMap(map);
+    } catch (err) {
+      console.error("Error fetching my reviews:", err);
     }
   };
 
@@ -331,6 +353,39 @@ const BarterRequests = () => {
             </button>
           )}
 
+          {/* Review button for completed barters */}
+          {barter.status === "completed" &&
+            (myReviewsMap[barter._id] ? (
+              <button
+                onClick={() => {
+                  setSelectedReviewBarter(barter);
+                  setExistingReview(myReviewsMap[barter._id]);
+                }}
+                className="bg-accent-teal hover:bg-teal-400 text-black border-2 border-black px-4 py-2 text-xs font-bold uppercase transition-colors shadow-hard-sm flex items-center gap-1 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+              >
+                <span
+                  className="material-symbols-outlined text-sm font-bold"
+                  style={{ fontVariationSettings: '"FILL" 1' }}
+                >
+                  star
+                </span>
+                View Review
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setSelectedReviewBarter(barter);
+                  setExistingReview(null);
+                }}
+                className="bg-primary hover:bg-primary-dark text-black border-2 border-black px-4 py-2 text-xs font-bold uppercase transition-colors shadow-hard-sm flex items-center gap-1 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+              >
+                <span className="material-symbols-outlined text-sm font-bold">
+                  star
+                </span>
+                Review
+              </button>
+            ))}
+
           {/* Details button always visible */}
           <button
             onClick={() => handleViewDetails(barter._id)}
@@ -345,6 +400,26 @@ const BarterRequests = () => {
 
   return (
     <div className="flex h-screen overflow-hidden bg-neutral-surface">
+      {/* Review Modal */}
+      {selectedReviewBarter && (
+        <ReviewModal
+          barter={selectedReviewBarter}
+          currentUser={currentUser}
+          existingReview={existingReview}
+          onClose={() => {
+            setSelectedReviewBarter(null);
+            setExistingReview(null);
+          }}
+          onSuccess={() => {
+            setSelectedReviewBarter(null);
+            setExistingReview(null);
+            fetchData();
+            fetchStats();
+            fetchMyReviews();
+          }}
+        />
+      )}
+
       {/* Barter Detail Panel */}
       {selectedBarterId && (
         <BarterDetailPanel
